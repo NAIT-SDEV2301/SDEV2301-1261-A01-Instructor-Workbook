@@ -18,10 +18,15 @@ namespace PersonDomain
         //}
         public string FullName => $"{LastName}, {FirstName}";
 
-        public Person(string firstName, string lastName)
+        public string? PreferredName { get; }
+
+        public string DisplayName => PreferredName ?? FullName;
+
+        public Person(string firstName, string lastName, string? preferredName = null)
         {
-            FirstName = firstName;
-            LastName = lastName;
+            FirstName = firstName.Trim();
+            LastName = lastName.Trim();
+            PreferredName = preferredName?.Trim();
         }
 
     }
