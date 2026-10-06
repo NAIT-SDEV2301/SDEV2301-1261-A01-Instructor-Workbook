@@ -1,3 +1,4 @@
+using Lesson13_LinqIntro;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,9 +38,19 @@ var pokedex = new List<Pokemon>
     new(445, "Garchomp",   "Dragon", "Ground",130, 95,102, 600, false),
 };
 
+var products = new List<Product>
+{
+    new Product("Notebook",4.99m,"School"),
+    new Product("Mouse",19.99m,"Tech"),
+    new Product("Headphones",79.99m,"Tech"),
+    new Product("Granola Bars",6.49m,"Food"),
+    new Product("Water Bottle",14.99m,"School"),
+
+};
 // STARTUP CHECK: run the unchanged starter before starting the activities.
 Console.WriteLine($"Students ready: {students.Count}");
 Console.WriteLine($"Pokémon ready: {pokedex.Count}");
+Console.WriteLine($"Products ready: {products.Count}");
 
 // Write your code in the sections below. Use a different variable name for
 // each query, or edit an existing query as directed during the lesson.
@@ -124,3 +135,42 @@ foreach(Student currentStudent in passing)
 
 
 #endregion
+
+var lowToHigh = products.OrderBy(p => p.Price);
+//foreach (var product in lowToHigh)
+//{
+//    Console.WriteLine($"{product.Name}: {product.Price:C}");
+//}
+DisplayProducts("Products list sorted ascending by price", lowToHigh);
+var highToLow = products.OrderByDescending(p => p.Price);
+//foreach (var product in highToLow)
+//{
+//    Console.WriteLine($"{product.Name}: {product.Price:C}");
+//}
+DisplayProducts("Products list sorted descending by price", highToLow);
+DisplayProducts("Original products list:", products);
+var byCategoryThenName = products
+    .OrderBy(p => p.Category)
+    .ThenBy(p => p.Name);
+DisplayProducts("Product list sorted by category then by name", byCategoryThenName);
+
+var count = products.Count();
+var total = products.Sum(p => p.Price);
+var minimum = products.Min(p => p.Price);
+var maximum = products.Max(p => p.Price);
+var average = products.Average(p => p.Price);
+
+Console.WriteLine($"Product Count: {count}");
+Console.WriteLine($"Total Product Price: {total:C}");
+Console.WriteLine($"Minimum Product Price : {minimum:C}");
+Console.WriteLine($"Maximim Product Price: {maximum:C}");
+Console.WriteLine($"Average Product Price: {average:C}");
+
+static void DisplayProducts(string title, IEnumerable<Product> products)
+{
+    Console.WriteLine(title);
+    foreach (var product in products)
+    {
+        Console.WriteLine($"{product.Name}: {product.Price:C}");
+    }
+}
