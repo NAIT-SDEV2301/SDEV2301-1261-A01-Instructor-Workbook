@@ -15,4 +15,6 @@ if (!context.Products.Any())
         new Product { Name = "Monitor", Price = 219.9m }
         );
 
+    var rowsSaved = context.SaveChanges();
+    Console.WriteLine($"{rowsSaved} rows saved.");
 }
