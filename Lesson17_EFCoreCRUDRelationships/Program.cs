@@ -1,4 +1,5 @@
 using Lesson17_EFCoreCRUDRelationships;
+using Microsoft.EntityFrameworkCore;
 
 using var context = new AppDbContext();
 if (!context.Categories.Any())
@@ -22,3 +23,21 @@ if (!context.Categories.Any())
     Console.WriteLine("Database seeded with data");
 }
 
+using var queryContext = new AppDbContext();
+var category3 = queryContext.Categories
+    //.Include(c => c.Products)
+    .First();
+
+Console.WriteLine(category3.Name);
+foreach (var product in category3.Products)
+    Console.WriteLine($"-{product.Name}: {product.Price:C}");
+
+using var updateContext = new AppDbContext();
+var keyboard = updateContext.Products.First(p => p.Name == "Keyboard");
+keyboard.Price = 39.99m;
+updateContext.SaveChanges();
+
+using var deleteContext = new AppDbContext();
+var electronics = deleteContext.Categories.First(c => c.Name == "Electronics");
+deleteContext.Remove(electronics);
+deleteContext.SaveChanges();
