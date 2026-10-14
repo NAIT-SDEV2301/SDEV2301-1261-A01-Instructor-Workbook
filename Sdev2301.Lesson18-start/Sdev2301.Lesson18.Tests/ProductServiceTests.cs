@@ -33,7 +33,7 @@ namespace Sdev2301.Lesson18.Tests
 
             }
         }
-
+        
         [Theory]
         [InlineData(0)]
         [InlineData(-1)]
@@ -43,7 +43,14 @@ namespace Sdev2301.Lesson18.Tests
             using (context) using (connection)
             {
                 // TODO 7: Construct service and use Assert.Throws.
-                throw new NotImplementedException();
+                //throw new NotImplementedException();
+                var service = new ProductService(context);
+
+                // Act and Assert
+                Assert.Throws<ArgumentOutOfRangeException>(() =>
+                    service.CreateProduct("sku123", "invalid", price, 1)
+                );
+
             }
         }
     }

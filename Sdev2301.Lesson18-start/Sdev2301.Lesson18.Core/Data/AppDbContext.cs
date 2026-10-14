@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Sdev2301.Lesson18.Core.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,14 +17,36 @@ namespace Sdev2301.Lesson18.Core.Data
         {
             base.OnModelCreating(model);
 
-            // TODO (after break): Explicitly configure Category and Product.
-            // 1. HasKey for both entities.
-            // 2. Category.Name required, max 50 characters.
-            // 3. Product.Sku required/max 20 and Name required/max 100.
-            // 4. Unique index for Product.Sku.
-            // 5. HasOne/WithMany/HasForeignKey for CategoryId.
             // Optional: restrict deletion of a Category with Products.
-        }
-    }
+            model.Entity<Product>(entity =>
+            {
+                // 1. HasKey for both entities.
+                entity.HasKey(p => p.Id);
+                // 3. Product.Sku required/max 20 and Name required/max 100.
+                entity.Property(p => p.Sku)
+                      .IsRequired().HasMaxLength(20);
+                entity.Property(p => p.Name)
+                      .IsRequired().HasMaxLength(100);
+                // 4. Unique index for Product.Sku.
+                entity.HasIndex(p => p.Sku).IsUnique();
+            });
 
+            // 2. Category.Name required, max 50 characters.
+            model.Entity<Category>(entity =>
+            {
+                entity.Property(c => c.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+            });
+
+            // 5. HasOne/WithMany/HasForeignKey for CategoryId.
+            model.Entity<Product>()
+                .HasOne(p => p.Category)
+                .WithMany(c => c.Products)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
+
+    }
+    
 }
