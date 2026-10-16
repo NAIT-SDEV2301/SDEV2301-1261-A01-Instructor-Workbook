@@ -1,0 +1,82 @@
+@page "/products"
+@* @layout ProductLayout *@
+
+<PageTitle>Products</PageTitle>
+<h1>Products</h1>
+
+<p>There are @_products.Count products.</p>
+<p>Last refreshed: @DateTime.Now.ToLongTimeString()</p>
+
+<div class="mb-3">
+    <label class="form-label" for="productName">New product name</label>
+    <input id="productName" class="form-control" @bind="NewProductName" />
+</div>
+
+<p>Preview: @NewProductName</p>
+
+<button class="btn btn-primary" @onclick="AddProduct">
+    Add Sample Product
+</button>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>SKU</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Active</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var product in _products)
+        {
+            <tr>
+                <td>@product.Sku</td>
+                <td>@product.Name</td>
+                <td>@product.Price.ToString("C")</td>
+                <td>@product.IsActive</td>
+            </tr>
+        }
+    </tbody>
+</table>
+@code {
+
+    private List<Product> _products =
+[
+    new () { Id=1, Sku="KEY-100",Name="Keyboard",Price=49.99m,IsActive=true },
+    new() { Id=2, Sku="MOU-100", Name="Mouse", Price=24.99m, IsActive=true}
+];
+
+    private string NewProductName { get; set; } = string.Empty;
+
+    private void AddProduct()
+    {
+        if (string.IsNullOrWhiteSpace(NewProductName))
+        {
+            return;
+        }
+
+        var nextNumber = _products.Count + 1;
+        _products.Add(new Product
+            {
+                Id = nextNumber,
+                Sku = $"NEW-{nextNumber:000}",
+                // Name = $"Name Product {nextNumber}",
+                Name = NewProductName.Trim(),
+                Price = Random.Shared.Next(1, 99),
+                IsActive = true
+            });
+
+        // Clear the product name field
+        NewProductName = string.Empty;
+    }
+
+    private class Product
+    {
+        public int Id { get; set; }
+        public string Sku { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public decimal Price { get; set; } 
+        public bool IsActive { get; set; }
+    }
+}
