@@ -18,10 +18,13 @@
     Add Sample Product
 </button>
 
-<ProductCard Sku="TEST-001"
-             Name="Test Product"
-             Price="19.99m"
-             IsActive="true" />
+@foreach (var product in _products)
+{
+    <ProductCard Sku="@product.Sku"
+                 Name="@product.Name"
+                 Price="@product.Price"
+                 IsActive="@product.IsActive" />
+}
 
 <table class="table table-striped">
     <thead>
