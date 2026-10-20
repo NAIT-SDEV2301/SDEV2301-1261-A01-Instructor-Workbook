@@ -20,12 +20,9 @@
 
 @foreach (var product in _products)
 {
-    <ProductCard Sku="@product.Sku"
-                 Name="@product.Name"
-                 Price="@product.Price"
-                 IsActive="@product.IsActive" />
+    <ProductCard Item="@product" />
 }
-
+@* 
 <table class="table table-striped">
     <thead>
         <tr>
@@ -46,7 +43,8 @@
             </tr>
         }
     </tbody>
-</table>
+</table> *@
+
 @code {
 
     private List<Product> _products =
