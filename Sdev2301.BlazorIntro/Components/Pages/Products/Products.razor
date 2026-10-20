@@ -18,9 +18,17 @@
     Add Sample Product
 </button>
 
+@if (_selectedProduct is not null)
+{
+    <div class="alert alert-info">
+        Selected: @_selectedProduct.Name
+    </div>
+}
 @foreach (var product in _products)
 {
-    <ProductCard Item="@product" />
+    <ProductCard
+        Item="@product"
+        OnSelected="HandleProductSelected" />
 }
 @* 
 <table class="table table-striped">
@@ -46,6 +54,12 @@
 </table> *@
 
 @code {
+    private Product? _selectedProduct;
+
+    private void HandleProductSelected(Product product)
+    {
+        _selectedProduct = product;
+    }
 
     private List<Product> _products =
 [
