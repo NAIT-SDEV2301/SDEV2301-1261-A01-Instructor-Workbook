@@ -24,6 +24,8 @@
     <div class="alert alert-info">
         @* Selected: @_selectedProduct.Name *@
         @ProductDisplayService.GetSummary(_selectedProduct)
+
+        <p>@ProductDisplayService.GetPriceMessage(_selectedProduct)</p>
     </div>
 }
 @foreach (var product in _products)

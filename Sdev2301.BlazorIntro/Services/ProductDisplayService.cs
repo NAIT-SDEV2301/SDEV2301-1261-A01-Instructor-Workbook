@@ -13,5 +13,12 @@ namespace Sdev2301.BlazorIntro.Services
         {
             return $"{product.Sku} - {product.Name} ({product.Price:C})";
         }
+
+        public string GetPriceMessage(Product product)
+        {
+            return product.Price >= 100m
+                ? "Premium product"
+                : "Standard product";
+        }
     }
 }
