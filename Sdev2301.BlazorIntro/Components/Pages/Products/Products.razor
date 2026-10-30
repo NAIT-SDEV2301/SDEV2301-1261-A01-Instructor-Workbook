@@ -1,5 +1,6 @@
 @page "/products"
 @* @layout ProductLayout *@
+@inject ProductDisplayService ProductDisplayService
 
 <PageTitle>Products</PageTitle>
 <h1>Products</h1>
@@ -21,7 +22,8 @@
 @if (_selectedProduct is not null)
 {
     <div class="alert alert-info">
-        Selected: @_selectedProduct.Name
+        @* Selected: @_selectedProduct.Name *@
+        @ProductDisplayService.GetSummary(_selectedProduct)
     </div>
 }
 @foreach (var product in _products)
