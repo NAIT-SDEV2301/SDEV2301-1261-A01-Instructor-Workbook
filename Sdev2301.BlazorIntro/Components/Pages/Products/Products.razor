@@ -9,16 +9,6 @@
 <p>There are @_products.Count products.</p>
 <p>Last refreshed: @DateTime.Now.ToLongTimeString()</p>
 
-<div class="mb-3">
-    <label class="form-label" for="productName">New product name</label>
-    <input id="productName" class="form-control" @bind="NewProductName" />
-</div>
-
-<p>Preview: @NewProductName</p>
-
-<button class="btn btn-primary" @onclick="AddProduct">
-    Add Sample Product
-</button>
 
 @if (_selectedProduct is not null)
 {
@@ -41,30 +31,45 @@ href="@($"/products/{product.Id}")">
 </a>
 
 }
-@* 
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>SKU</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Active</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var product in _products)
-        {
-            <tr>
-                <td>@product.Sku</td>
-                <td>@product.Name</td>
-                <td>@product.Price.ToString("C")</td>
-                <td>@product.IsActive</td>
-            </tr>
-        }
-    </tbody>
-</table> *@
+<EditForm Model="_formModel">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="sku">Product Sku</label>
+        <InputText id="sku"
+            @bind-Value="_formModel.Sku"
+            />
+        <ValidationMessage For="@(() => _formModel.Sku)" />
+    </div>
+
+    <div>
+        <label for="name">Product Name</label>
+        <InputText id="name"
+                   @bind-Value="_formModel.Name" />
+        <ValidationMessage For="@(() => _formModel.Name)" />
+    </div>
+
+    <div>
+        <label for="price">Price</label>
+        <InputNumber id="price"
+                   @bind-Value="_formModel.Price" />
+        <ValidationMessage For="@(() => _formModel.Price)" />
+    </div>
+
+    <div>
+        <label for="isactive">IsActive</label>
+        <InputCheckbox id="isactive"
+                     @bind-Value="_formModel.IsActive" />
+        <ValidationMessage For="@(() => _formModel.IsActive)" />
+    </div>
+
+    <button type="submit">Add Product</button>
+</EditForm>
 
 @code {
+    private ProductFormModel _formModel = new();
+
     private Product? _selectedProduct;
 
     private void HandleProductSelected(Product product)
@@ -72,11 +77,7 @@ href="@($"/products/{product.Id}")">
         _selectedProduct = product;
     }
 
-    //     private List<Product> _products =
-    // [
-    //     new () { Id=1, Sku="KEY-100",Name="Keyboard",Price=49.99m,IsActive=true },
-    //     new() { Id=2, Sku="MOU-100", Name="Mouse", Price=24.99m, IsActive=true}
-    // ];
+  
     private List<Product> _products = [];
 
     private string NewProductName { get; set; } = string.Empty;
@@ -113,12 +114,4 @@ href="@($"/products/{product.Id}")">
         _products = await ProductService.GetAllAsync();
     }
 
-    // private class Product
-    // {
-    //     public int Id { get; set; }
-    //     public string Sku { get; set; } = string.Empty;
-    //     public string Name { get; set; } = string.Empty;
-    //     public decimal Price { get; set; } 
-    //     public bool IsActive { get; set; }
-    // }
 }
