@@ -22,6 +22,8 @@ var connectionString =
 
 builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
+// Register ProductService for DI
+builder.Services.AddScoped<ProductService>();
 
 var app = builder.Build();
 
