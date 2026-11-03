@@ -1,6 +1,7 @@
 @page "/products"
 @* @layout ProductLayout *@
 @inject ProductDisplayService ProductDisplayService
+@inject ProductService ProductService
 
 <PageTitle>Products</PageTitle>
 <h1>Products</h1>
@@ -71,11 +72,12 @@ href="@($"/products/{product.Id}")">
         _selectedProduct = product;
     }
 
-    private List<Product> _products =
-[
-    new () { Id=1, Sku="KEY-100",Name="Keyboard",Price=49.99m,IsActive=true },
-    new() { Id=2, Sku="MOU-100", Name="Mouse", Price=24.99m, IsActive=true}
-];
+    //     private List<Product> _products =
+    // [
+    //     new () { Id=1, Sku="KEY-100",Name="Keyboard",Price=49.99m,IsActive=true },
+    //     new() { Id=2, Sku="MOU-100", Name="Mouse", Price=24.99m, IsActive=true}
+    // ];
+    private List<Product> _products = [];
 
     private string NewProductName { get; set; } = string.Empty;
 
@@ -91,7 +93,7 @@ href="@($"/products/{product.Id}")">
             {
                 Id = nextNumber,
                 Sku = $"NEW-{nextNumber:000}",
-                // Name = $"Name Product {nextNumber}",
+            // Name = $"Name Product {nextNumber}",
                 Name = NewProductName.Trim(),
                 Price = Random.Shared.Next(1, 99),
                 IsActive = true
@@ -99,6 +101,16 @@ href="@($"/products/{product.Id}")">
 
         // Clear the product name field
         NewProductName = string.Empty;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadProductsAsync();
+    }
+
+    private async Task LoadProductsAsync()
+    {
+        _products = await ProductService.GetAllAsync();
     }
 
     // private class Product
