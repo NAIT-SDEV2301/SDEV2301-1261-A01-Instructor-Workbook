@@ -31,7 +31,7 @@ href="@($"/products/{product.Id}")">
 </a>
 
 }
-<EditForm Model="_formModel">
+<EditForm Model="_formModel" OnValidSubmit="HandleValidSubmitAsync">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -82,26 +82,21 @@ href="@($"/products/{product.Id}")">
 
     private string NewProductName { get; set; } = string.Empty;
 
-    private void AddProduct()
+    private async Task HandleValidSubmitAsync()
     {
-        if (string.IsNullOrWhiteSpace(NewProductName))
+        var product = new Product
         {
-            return;
-        }
+            Sku = _formModel.Sku,
+            Name = _formModel.Name,
+            Price = _formModel.Price,
+            IsActive = _formModel.IsActive
+        };
 
-        var nextNumber = _products.Count + 1;
-        _products.Add(new Product
-            {
-                Id = nextNumber,
-                Sku = $"NEW-{nextNumber:000}",
-            // Name = $"Name Product {nextNumber}",
-                Name = NewProductName.Trim(),
-                Price = Random.Shared.Next(1, 99),
-                IsActive = true
-            });
+        await ProductService.AddAsync(product);
 
-        // Clear the product name field
-        NewProductName = string.Empty;
+        _formModel = new ProductFormModel();
+
+        await LoadProductsAsync();
     }
 
     protected override async Task OnInitializedAsync()
