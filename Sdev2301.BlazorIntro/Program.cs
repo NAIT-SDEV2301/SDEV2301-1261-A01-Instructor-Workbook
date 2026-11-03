@@ -1,5 +1,8 @@
 using Sdev2301.BlazorIntro.Components;
-using Sdev2301.BlazorIntro.Services;
+using Sdev2301.BlazorIntro.Services; // for ProductService class
+using Microsoft.EntityFrameworkCore;// for UseSqlServer extension method
+using Sdev2301.BlazorIntro.Data; // for AppDbContext class
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,14 @@ builder.Services.AddScoped<ProductDisplayService>();
 builder.Services.AddSingleton<SingletonMarker>();
 builder.Services.AddScoped<ScopedMarker>();
 builder.Services.AddTransient<TransientMarker>();
+
+var connectionString =
+    builder.Configuration.GetConnectionString("AppDbConnection")
+    ?? throw new InvalidOperationException(
+        "Connection string 'AppDbConnection' not found.");
+
+builder.Services.AddDbContextFactory<AppDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 var app = builder.Build();
 
