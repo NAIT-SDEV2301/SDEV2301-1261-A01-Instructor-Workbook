@@ -27,6 +27,16 @@ namespace Sdev2301.BlazorIntro.Services
         {
             await using var context = await _dbFactory.CreateDbContextAsync();
 
+            ArgumentNullException.ThrowIfNull(product);
+
+            if (product.CategoryId is not int categoryId ||
+                !await context.Categories.AnyAsync(category => category.Id == categoryId))
+            {
+                throw new ArgumentException(
+                    "Select an existing category before saving the product.",
+                    nameof(product));
+            }
+
             context.Products.Add(product);
             await context.SaveChangesAsync();
         }

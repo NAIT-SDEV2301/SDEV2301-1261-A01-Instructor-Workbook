@@ -103,7 +103,9 @@ href="@($"/products/{product.Id}")">
             Sku = _formModel.Sku,
             Name = _formModel.Name,
             Price = _formModel.Price,
-            IsActive = _formModel.IsActive
+            IsActive = _formModel.IsActive,
+
+            CategoryId = _formModel.CategoryId
         };
 
         await ProductService.AddAsync(product);

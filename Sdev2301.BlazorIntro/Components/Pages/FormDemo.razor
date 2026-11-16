@@ -25,6 +25,7 @@ else
                 <th>Name</th>
                 <th>Price</th>
                 <th>Active</th>
+                <th>Category</th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +36,7 @@ else
                     <td>@product.Name</td>
                     <td>@product.Price.ToString("C")</td>
                     <td>@(product.IsActive ? "Yes" : "No")</td>
+                    <td>@product.Category?.Name</td>
                 </tr>
             }
         </tbody>
@@ -108,7 +110,9 @@ else
             Sku = _model.Sku,
             Name = _model.Name,
             Price = _model.Price,
-            IsActive = _model.IsActive
+            IsActive = _model.IsActive,
+
+            CategoryId = _model.CategoryId
         };
 
         _submittedProducts.Add(product);
