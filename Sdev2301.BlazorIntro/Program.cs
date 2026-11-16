@@ -24,6 +24,9 @@ builder.Services.AddDbContextFactory<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 // Register ProductService for DI
 builder.Services.AddScoped<ProductService>();
+// Register CategoryService for DI
+builder.Services.AddScoped<CategoryService>();
+
 
 var app = builder.Build();
 
