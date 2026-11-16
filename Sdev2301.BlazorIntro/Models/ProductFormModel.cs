@@ -19,5 +19,8 @@ namespace Sdev2301.BlazorIntro.Models
         public int StockQuantity { get; set; }
 
         public bool IsActive { get; set; } = true;
+
+        [Required(ErrorMessage = "Please select a category.")]
+        public int? CategoryId { get; set; }
     }
 }

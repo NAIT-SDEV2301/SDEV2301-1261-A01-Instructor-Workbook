@@ -2,6 +2,7 @@
 @* @layout ProductLayout *@
 @inject ProductDisplayService ProductDisplayService
 @inject ProductService ProductService
+@inject CategoryService CategoryService
 
 <PageTitle>Products</PageTitle>
 <h1>Products</h1>
@@ -64,6 +65,19 @@ href="@($"/products/{product.Id}")">
         <ValidationMessage For="@(() => _formModel.IsActive)" />
     </div>
 
+    <div class="mb-3">
+        <label class="form-label" for="category">Category</label>
+        <InputSelect id="category" class="form-select"
+                     @bind-Value="_formModel.CategoryId">
+            <option value="">-- Select a category --</option>
+            @foreach (var category in _categories)
+            {
+                <option value="@category.Id">@category.Name</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => _formModel.CategoryId)" />
+    </div>
+
     <button type="submit">Add Product</button>
 </EditForm>
 
@@ -99,9 +113,12 @@ href="@($"/products/{product.Id}")">
         await LoadProductsAsync();
     }
 
+    private List<Category> _categories = [];
+
     protected override async Task OnInitializedAsync()
     {
         await LoadProductsAsync();
+        _categories = await CategoryService.GetAllAsync();
     }
 
     private async Task LoadProductsAsync()
