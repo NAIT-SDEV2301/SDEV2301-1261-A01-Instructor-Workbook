@@ -19,6 +19,7 @@ namespace Sdev2301.BlazorIntro.Services
 
             return await context.Products
                 .AsNoTracking()
+                .Include(product => product.Category)
                 .OrderBy(product => product.Name)
                 .ToListAsync();
         }

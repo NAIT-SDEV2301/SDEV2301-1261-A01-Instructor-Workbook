@@ -2,6 +2,9 @@
 
 <div class="card p-3 mb-3">
     <h4>@Item.Name</h4>
+
+    <p class="mb-1"><strong>Category:</strong>@(Item.Category?.Name ?? "(not assigned)")</p>
+
     <p class="mb-1"><strong>SKU:</strong> @Item.Sku</p>
     <p class="mb-1"><strong>Price:</strong> @Item.Price.ToString("C")</p>
     @* <p class="mb-0"><strong>Status:</strong> @(Item.IsActive ? "Active" : "Inactive")</p> *@
