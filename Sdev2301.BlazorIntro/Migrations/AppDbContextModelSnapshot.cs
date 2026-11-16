@@ -21,6 +21,40 @@ namespace Sdev2301.BlazorIntro.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Sdev2301.BlazorIntro.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Accessories"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Electronics"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Office Supplies"
+                        });
+                });
+
             modelBuilder.Entity("Sdev2301.BlazorIntro.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -28,6 +62,9 @@ namespace Sdev2301.BlazorIntro.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -44,6 +81,8 @@ namespace Sdev2301.BlazorIntro.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
 
@@ -64,6 +103,20 @@ namespace Sdev2301.BlazorIntro.Migrations
                             Price = 24.99m,
                             Sku = "MOU-200"
                         });
+                });
+
+            modelBuilder.Entity("Sdev2301.BlazorIntro.Models.Product", b =>
+                {
+                    b.HasOne("Sdev2301.BlazorIntro.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Sdev2301.BlazorIntro.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
