@@ -12,6 +12,7 @@ namespace Sdev2301.BlazorIntro.Data
         }
 
         public DbSet<Product> Products => Set<Product>();
+        public DbSet<Category> Categories => Set<Category>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,6 +34,12 @@ namespace Sdev2301.BlazorIntro.Data
                     IsActive = true
                 }
             );
+
+            modelBuilder.Entity<Category>().HasData(
+               new Category { Id = 1, Name = "Accessories" },
+               new Category { Id = 2, Name = "Electronics" },
+               new Category { Id = 3, Name = "Office Supplies" }
+           );
         }
     }
 }
